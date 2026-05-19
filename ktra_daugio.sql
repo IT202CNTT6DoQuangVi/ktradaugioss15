@@ -67,11 +67,11 @@ FOR EACH ROW
 BEGIN
 
     IF NEW.score < 0 THEN
-        SET NEW.score = 0;
+	SET NEW.score = 0;
     END IF;
 
     IF NEW.score > 10 THEN
-        SET NEW.score = 10;
+	SET NEW.score = 10;
     END IF;
 
 END //
@@ -95,8 +95,8 @@ AFTER UPDATE ON grades
 FOR EACH ROW
 BEGIN
 
-    INSERT INTO grade_log(student_id,old_score, new_score,change_date)
-    VALUES( OLD.student_id, OLD.score, NEW.score, NOW() );
+INSERT INTO grade_log(student_id,old_score, new_score,change_date)
+VALUES( OLD.student_id, OLD.score, NEW.score, NOW() );
 
 END //
 
@@ -108,20 +108,17 @@ CREATE PROCEDURE sp_pay_tuition()
 BEGIN
 START TRANSACTION;
 
-    UPDATE students
-    SET total_debt = total_debt - 2000000
-    WHERE student_id = 'SV01';
+UPDATE students
+SET total_debt = total_debt - 2000000
+WHERE student_id = 'SV01';
     IF (
-        SELECT total_debt
-        FROM students
+        SELECT total_debt FROM students
         WHERE student_id = 'SV01'
     ) < 0 THEN
         ROLLBACK;
-    ELSE
-
+	ELSE
         COMMIT;
-
-    END IF;
+	END IF;
 
 END //
 
@@ -138,8 +135,8 @@ FOR EACH ROW
 BEGIN
 
     IF OLD.score >= 4.0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Qua mon roi, khong duoc sua diem ';
+	SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT = 'Qua mon roi, khong duoc sua diem ';
     END IF;
 
 END //
